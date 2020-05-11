@@ -1,1 +1,2 @@
-*.csv # csv文件不上传
+*.csv # csv文件不上
+./Mnist

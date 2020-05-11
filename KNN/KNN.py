@@ -144,8 +144,11 @@ def model_test(trainDataArr, trainLabelArr, testDataArr, testLabelArr, topK):
         print('test %d:%d' % (i, 200))
         #读取测试集当前测试样本的向量
         x = testDataMat[i]
+        print("testDataMat" , x)
         #获取预测的标记
         y = getClosest(trainDataMat, trainLabelMat, x, topK)
+
+        print("预测的标记y", y)
         #如果预测标记与实际标记不符，错误值计数加1
         if y != testLabelMat[i]: errorCnt += 1
 
