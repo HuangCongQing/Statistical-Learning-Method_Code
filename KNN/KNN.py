@@ -60,10 +60,7 @@ def calcDist(x1, x2):
     #马哈顿距离计算公式
     # return np.sum(x1 - x2)
 
-
-
-
-def getClosest(trainDataMat, trainLabelMat, x, topK):
+def getClosest(trainDataMat, trainLabelMat, x, topK):  # 查找里面占某类标签最多的那类标签
     '''
     预测样本x的标记。
     获取方式通过找到与样本x最近的topK个点，并查看它们的标签。
@@ -78,7 +75,7 @@ def getClosest(trainDataMat, trainLabelMat, x, topK):
     #建立一个存放向量x与每个训练集中样本距离的列表
     #列表的长度为训练集的长度，distList[i]表示x与训练集中第
     ## i个样本的距离
-    distList = [0] * len(trainLabelMat)
+    distList = [0] * len(trainLabelMat)  #len个零 [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     #遍历训练集中所有的样本点，计算与x的距离
     for i in range(len(trainDataMat)):
         #获取训练集中当前样本的向量
@@ -86,7 +83,7 @@ def getClosest(trainDataMat, trainLabelMat, x, topK):
         #计算向量x与训练集样本x的距离
         curDist = calcDist(x1, x)
         #将距离放入对应的列表位置中
-        distList[i] = curDist
+        distList[i] = curDist  # 样本距离的列表
 
     #对距离列表进行排序
     #argsort：函数将数组的值从小到大排序后，并按照其相对应的索引值输出
@@ -103,7 +100,7 @@ def getClosest(trainDataMat, trainLabelMat, x, topK):
     #这里没有对其进行优化主要原因是KNN的时间耗费大头在计算向量与向量之间的距离上，由于向量高维
     #所以计算时间需要很长，所以如果要提升时间，在这里优化的意义不大。（当然不是说就可以不优化了，
     #主要是我太懒了）
-    topKList = np.argsort(np.array(distList))[:topK]        #升序排序
+    topKList = np.argsort(np.array(distList))[:topK]        #对应索引升序排序 距离从最短到最长
     #建立一个长度时的列表，用于选择数量最多的标记
     #3.2.4提到了分类决策使用的是投票表决，topK个标记每人有一票，在数组中每个标记代表的位置中投入
     #自己对应的地方，随后进行唱票选择最高票的标记
@@ -114,7 +111,7 @@ def getClosest(trainDataMat, trainLabelMat, x, topK):
         #int(trainLabelMat[index])：将标记转换为int（实际上已经是int了，但是不int的话，报错）
         #labelList[int(trainLabelMat[index])]：找到标记在labelList中对应的位置
         #最后加1，表示投了一票
-        labelList[int(trainLabelMat[index])] += 1
+        labelList[int(trainLabelMat[index])] += 1# 各对应label分别累加
     #max(labelList)：找到选票箱中票数最多的票数值
     #labelList.index(max(labelList))：再根据最大值在列表中找到该值对应的索引，等同于预测的标记
     return labelList.index(max(labelList))
